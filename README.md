@@ -1,137 +1,114 @@
-# Subconjunto Soma (Subset Sum) - Backtracking
+# Subconjunto Soma (Subset Sum) — Backtracking
 
-Projeto para a disciplina **Teoria da Computação**, com foco na análise teórica e experimental do algoritmo de **backtracking** aplicado ao problema **Subconjunto Soma (Subset Sum)**.
+Este repositório contém a implementação e a infraestrutura de experimentos para o estudo do algoritmo de backtracking aplicado ao problema Subconjunto Soma (Subset Sum), desenvolvido para a disciplina **Teoria da Computação**.
 
-## Estrutura dos entregáveis
+## Sumário
 
-```text
-subset_sum_backtracking_entrega_final/
-├── README.md
-├── CHECKLIST_ENTREGA.md
-├── run_all.sh
-├── relatorio/
-│   ├── Relatorio_Subset_Sum_Backtracking_Focado.docx
-│   └── Relatorio_Subset_Sum_Backtracking_Focado.pdf
-├── slides/
-│   ├── Apresentacao_Subset_Sum_Backtracking.pptx
-│   └── Apresentacao_Subset_Sum_Backtracking.pdf
-├── data/
-│   ├── generate_instances.py
-│   └── instances.csv               # gerado automaticamente
-├── python/
-│   ├── subset_sum.py
-│   ├── benchmark.py
-│   └── requirements.txt
-├── java/
-│   ├── README.md
-│   └── src/
-│       ├── SubsetSum.java
-│       └── Benchmark.java
-├── analysis/
-│   ├── generate_graphs.py
-│   ├── README.md
-│   └── graphs/                     # gerado automaticamente
-└── results/                        # CSVs gerados automaticamente
-```
+- Descrição
+- Requisitos
+- Estrutura do projeto
+- Execução rápida (Linux/macOS e Windows)
+- Como reproduzir os experimentos
+- Saída esperada
+- Contribuições e contatos
 
-## Entregáveis principais
+## Descrição
 
-- **Relatório em PDF:** `relatorio/Relatorio_Subset_Sum_Backtracking_Focado.pdf`
-- **Slides da apresentação:** `slides/Apresentacao_Subset_Sum_Backtracking.pptx`
-- **Código-fonte:** pastas `python/`, `java/`, `data/` e `analysis/`
-- **Repositório GitHub:** após subir estes arquivos, inserir o link no relatório e no Classroom.
+O objetivo é comparar implementações em Python e Java, medir tempos (melhor, médio e pior caso) e gerar tabelas e gráficos que suportem a análise experimental.
 
-## Como executar tudo no Linux/macOS
+## Requisitos
 
-A partir da raiz do projeto:
+- Python 3.8+ (recomenda-se criar um ambiente virtual)
+- Dependências Python em `requirements.txt` (instale com `pip install -r requirements.txt`)
+- JDK (Java 11+ recomendado)
+- Ferramenta de shell (para `run_all.sh`) — no Windows use Git Bash, WSL ou adapte os comandos manualmente
+
+## Estrutura do projeto
+
+Principais pastas e arquivos:
+
+- `data/` — scripts para gerar instâncias (`generate_instances.py`) e o CSV `instances.csv` gerado
+- `python/` — implementação Python (`subset_sum.py`) e benchmark (`benchmark.py`)
+- `java/src/` — implementação Java (`SubsetSum.java`, `Benchmark.java`) e `java/README.md` com detalhes Java
+- `analysis/` — scripts para gerar gráficos (`generate_graphs.py`) e a pasta `analysis/graphs/` com figuras geradas
+- `results/` — CSVs e resumo gerados pelos benchmarks
+- `run_all.sh` — script que automatiza geração de instâncias, execução dos benchmarks e geração de gráficos
+
+## Execução rápida
+
+Linux / macOS (a partir da raiz do projeto):
 
 ```bash
 chmod +x run_all.sh
 ./run_all.sh
 ```
 
-O script executa quatro etapas:
+Windows (recomendações):
 
-1. gera as mesmas instâncias para Python e Java;
-2. executa o benchmark em Python;
-3. compila e executa o benchmark em Java;
-4. gera tabelas agregadas e gráficos.
+- Use Git Bash ou WSL para executar `run_all.sh` tal como acima. Ou execute manualmente os passos abaixo no PowerShell/Prompt:
 
-## Como executar manualmente
+1) Gerar instâncias (exemplo):
 
-### 1. Gerar entradas padronizadas
-
-```bash
-python3 data/generate_instances.py --runs 30 --sizes 8 10 12 14 15 16 18 20 --out data/instances.csv
+```powershell
+python data/generate_instances.py --runs 30 --sizes 8 10 12 14 15 16 18 20 --out data/instances.csv
 ```
 
-### 2. Executar Python
+2) Executar benchmark em Python:
 
-```bash
-python3 python/benchmark.py --instances data/instances.csv --out results/results_python.csv
+```powershell
+pip install -r requirements.txt
+python python/benchmark.py --instances data/instances.csv --out results/results_python.csv
 ```
 
-### 3. Executar Java
+3) Compilar e executar benchmark em Java:
 
-```bash
-javac -d java/out java/src/SubsetSum.java java/src/Benchmark.java
+```powershell
+javac -d java/out java/src/*.java
 java -cp java/out Benchmark --instances data/instances.csv --out results/results_java.csv
 ```
 
-### 4. Gerar gráficos e resumo estatístico
+4) Gerar gráficos e resumo:
 
-```bash
-python3 analysis/generate_graphs.py \
+```powershell
+python analysis/generate_graphs.py \
   --python-csv results/results_python.csv \
   --java-csv results/results_java.csv \
   --out-dir analysis/graphs \
   --summary-out results/summary_results.csv
 ```
 
-## Arquivos gerados após a execução
+## Como reproduzir os experimentos (passo a passo)
 
-```text
-results/results_python.csv
-results/results_java.csv
-results/summary_results.csv
-results/summary_results.md
-analysis/graphs/python_worst_vs_teorico.png
-analysis/graphs/java_worst_vs_teorico.png
-analysis/graphs/python_vs_java_worst.png
-analysis/graphs/casos_python.png
-analysis/graphs/casos_java.png
-```
+1. Garantir dependências (ver seção Requisitos).
+2. Gerar `data/instances.csv` com `data/generate_instances.py`.
+3. Executar `python/benchmark.py` e `java/Benchmark` apontando para o mesmo `instances.csv`.
+4. Agregar resultados em `results/` e gerar gráficos com `analysis/generate_graphs.py`.
+5. Anotar o ambiente de execução (CPU, RAM, SO, versões de Python/Java) no relatório.
 
-## Metodologia experimental
+## Saída esperada
 
-- Linguagens: Python e Java.
-- Medição em Python: `time.perf_counter()`.
-- Medição em Java: `System.nanoTime()`.
-- Cenários: melhor caso, caso médio e pior caso.
-- Rodadas: 30 por tamanho de entrada e cenário.
-- Tamanhos principais: `n = 10`, `n = 15`, `n = 20`.
-- Tamanhos adicionais para gráficos: `n = 8`, `12`, `14`, `16`, `18`.
-- Pior caso: `W = soma(S) + 1`, impossibilitando solução e evitando ativação da poda `somaAtual > W`.
+Após execução completa, os arquivos principais gerados são:
 
-## Observação importante
+- `results/results_python.csv`
+- `results/results_java.csv`
+- `results/summary_results.csv`
+- `results/summary_results.md`
+- Gráficos em `analysis/graphs/` (ex.: `python_worst_vs_teorico.png`)
 
-Os benchmarks devem ser executados no computador da equipe antes da entrega final. Assim, os tempos, gráficos e conclusões refletem o hardware descrito no relatório.
+## Boas práticas e observações
 
-Depois de rodar os testes, preencher no relatório:
+- Execute os benchmarks em um ambiente com pouca variação de carga para obter tempos consistentes.
+- Use o mesmo `instances.csv` para Python e Java para comparar resultados.
+- O pior caso experimental foi definido como `W = soma(S) + 1` (sem solução), para forçar exploração máxima.
 
-- processador;
-- memória RAM;
-- sistema operacional;
-- versão do Python;
-- versão do Java;
-- tabelas e gráficos obtidos.
+## Contribuição
 
-## Sugestão para GitHub
+Abra uma issue ou envie um pull request. Para mudanças que afetam reprodutibilidade, atualize também `results/` e `analysis/` conforme necessário.
 
-Crie um repositório chamado, por exemplo:
+## Referências e contato
 
-```text
-subset-sum-backtracking-teoria
-```
+Para detalhes sobre a metodologia e resultados, veja o relatório em `relatorio/`. Para dúvidas, contate o autor do trabalho (incluir e-mail no repositório se desejar).
 
-Depois, suba esta pasta inteira e coloque o link no relatório e no Classroom.
+---
+
+Arquivo atualizado automaticamente para facilitar execução em Windows e Linux. Se quiser, posso ajustar a seção de instalação passo a passo ou adicionar badges e instruções para GitHub Actions.
